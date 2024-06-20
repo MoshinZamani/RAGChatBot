@@ -1,0 +1,38 @@
+**Founders and Coders** is a well-known nonprofit organization in the UK that focuses on software development education and community development. Here are some key points about Founders and Coders:
+
+### Overview
+
+**Founders and Coders** is a UK-based organization that provides free coding education and training to aspiring software developers. Their primary mission is to make tech education accessible to everyone, regardless of their financial background, and to build a diverse and inclusive tech community.
+
+### Key Features
+
+1. **Free Coding Bootcamp**:
+   - Founders and Coders offers an intensive 16-week full-time coding bootcamp that is entirely free for participants. The curriculum covers full-stack JavaScript development, including HTML, CSS, Node.js, React, and more.
+   - The bootcamp emphasizes peer-led learning, where students work collaboratively and learn from each other as well as from experienced developers.
+
+2. **Community Focus**:
+   - The organization fosters a strong sense of community among its students, alumni, and partners. They encourage graduates to give back to the community by mentoring new students and contributing to open-source projects.
+   - Founders and Coders also collaborates with local organizations and businesses to support community development and address local tech needs.
+
+3. **Inclusive Environment**:
+   - Founders and Coders is committed to creating an inclusive and diverse environment. They actively work to attract participants from underrepresented groups in the tech industry, including women, people of color, and those from low-income backgrounds.
+
+4. **Global Impact**:
+   - Beyond the UK, Founders and Coders has inspired and supported the establishment of similar coding bootcamps in other parts of the world, including Gaza and Nazareth, through their "Code Your Future" initiative.
+
+5. **Job Placement and Career Support**:
+   - Graduates of the Founders and Coders bootcamp receive support in finding employment in the tech industry. The organization has strong connections with tech companies and startups, helping graduates secure job placements and internships.
+
+### History
+
+Founders and Coders was established in 2014 in London by a group of software developers and educators who wanted to create a more accessible pathway into tech careers. Since its inception, the organization has grown significantly, training hundreds of developers and expanding its impact both locally and internationally.
+
+### How to Apply
+
+- **Application Process**:
+  - Prospective students must go through a rigorous application process that includes a coding challenge, interviews, and a pre-course designed to ensure they have the foundational skills needed for the bootcamp.
+  - The selection process aims to identify motivated individuals who are committed to completing the program and contributing to the community.
+
+### Summary
+
+Founders and Coders is a unique and impactful organization that provides free, high-quality coding education while fostering a supportive and inclusive community. Their work has made a significant difference in the lives of many aspiring developers, particularly those from underrepresented groups, and continues to contribute positively to the tech ecosystem in the UK and beyond.

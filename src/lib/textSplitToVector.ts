@@ -1,40 +1,40 @@
-import fs from "fs/promises";
+import { promises as fs } from "fs";
 import path from "path";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { createClient } from "@supabase/supabase-js";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import { createClient } from "@supabase/supabase-js";
 
-const sbUrl = process.env.SUPABASE_URL!;
+const sbURL = process.env.SUPABASE_URL!;
 const sbApiKey = process.env.SUPABASE_API_KEY!;
 const openAIApiKey = process.env.OPENAI_API_KEY!;
 
-export async function textSplit() {
+export async function textSplitToVector() {
   try {
-    //Read file
-    const filePath = path.join(process.cwd(), "/src/public", "scrimba.txt");
+    // Read FAC.txt
+    const filePath = path.join(process.cwd(), "src/public", "fac.txt");
     const text = await fs.readFile(filePath, "utf-8");
 
-    // Split file into chunks
+    // Split text into chunks
     const splitter = new RecursiveCharacterTextSplitter({
       chunkSize: 500,
       chunkOverlap: 50,
-      separators: ["\n\n", "\n", " ", ""],
     });
     const chunks = await splitter.createDocuments([text]);
 
-    // Create client to connect to SupaBase
-    const client = createClient(sbUrl, sbApiKey);
+    // Connect SupaBase
+    const client = createClient(sbURL, sbApiKey);
 
+    // Create an instance of OpenAI Embeddings
     const embeddings = new OpenAIEmbeddings({ openAIApiKey });
-    // Use OpenAI Embeddings to create vectores
-    // and insert into SupaBase Vectore Store
+
+    // Turn chunks into vectors using embeddings
+    // and insert into SupaBase vector store
     SupabaseVectorStore.fromDocuments(chunks, embeddings, {
       client,
       tableName: "documents",
     });
-
-    console.log("VectoreStore full!!!");
+    console.log("Vectors inserted in vector store ");
   } catch (err) {
     console.error(err);
   }

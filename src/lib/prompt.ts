@@ -16,25 +16,10 @@ export async function prompt() {
 
   const standalonePrompt = PromptTemplate.fromTemplate(standaloneTemplate);
 
-  // const standaloneChain = RunnableSequence.from([
-  //   standalonePrompt,
-  //   openAIllm,
-  //   new StringOutputParser(),
-  // ]);
-
-  // const retrieverChain = RunnableSequence.from([retriever,])
-
   const answerTemplate =
     "Given a question and possible answers to that question create a friendly, concise and helpful answer: {question} {possibleAnswers}";
 
   const answerPrompt = PromptTemplate.fromTemplate(answerTemplate);
-
-  // const Chain = standalonePrompt
-  //   .pipe(openAIllm)
-  //   .pipe(new StringOutputParser())
-  //   .pipe(retriever)
-  //   .pipe(arrayToString)
-  //   .pipe(answerPrompt);
 
   const standaloneChain = RunnableSequence.from([
     standalonePrompt,
