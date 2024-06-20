@@ -1,3 +1,3 @@
 export function arrayToString(arr) {
-  arr.forEach((element) => console.log(element.pageContent));
+  return arr.map((element) => element.pageContent).join("\n\n\n");
 }

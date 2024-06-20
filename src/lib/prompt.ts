@@ -3,6 +3,10 @@ import { ChatOpenAI } from "@langchain/openai";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { retriever } from "@/utils/retriever";
 import { arrayToString } from "@/utils/arraytToString";
+import {
+  RunnableSequence,
+  RunnablePassthrough,
+} from "@langchain/core/runnables";
 
 export async function prompt() {
   const openAIllm = new ChatOpenAI();
@@ -12,27 +16,56 @@ export async function prompt() {
 
   const standalonePrompt = PromptTemplate.fromTemplate(standaloneTemplate);
 
-  const Chain = standalonePrompt
-    .pipe(openAIllm)
-    .pipe(new StringOutputParser())
-    .pipe(retriever);
+  // const standaloneChain = RunnableSequence.from([
+  //   standalonePrompt,
+  //   openAIllm,
+  //   new StringOutputParser(),
+  // ]);
 
-  const standaloneResponse = await Chain.invoke({
-    question:
-      "I am a web developer, recently graduated from university and want to know where to start to find a job?",
-  });
+  // const retrieverChain = RunnableSequence.from([retriever,])
 
   const answerTemplate =
     "Given a question and possible answers to that question create a friendly, concise and helpful answer: {question} {possibleAnswers}";
 
   const answerPrompt = PromptTemplate.fromTemplate(answerTemplate);
 
-  const answerChain = answerPrompt.pipe(openAIllm);
+  // const Chain = standalonePrompt
+  //   .pipe(openAIllm)
+  //   .pipe(new StringOutputParser())
+  //   .pipe(retriever)
+  //   .pipe(arrayToString)
+  //   .pipe(answerPrompt);
 
-  const answerResponse = await answerChain.invoke({
+  const standaloneChain = RunnableSequence.from([
+    standalonePrompt,
+    openAIllm,
+    new StringOutputParser(),
+  ]);
+
+  const retrieverChain = RunnableSequence.from([
+    (prev) => prev.standalone_question,
+    retriever,
+    arrayToString,
+  ]);
+
+  const answerChain = answerPrompt
+    .pipe(openAIllm)
+    .pipe(new StringOutputParser());
+
+  const chain = RunnableSequence.from([
+    {
+      standalone_question: standaloneChain,
+      original_question: new RunnablePassthrough(),
+    },
+    {
+      possibleAnswers: retrieverChain,
+      question: ({ original_question }) => original_question.question,
+    },
+    answerChain,
+  ]);
+  const standaloneResponse = await chain.invoke({
     question:
-      "I am a web developer, recently graduated from university and want to know where to start to find a job?",
-    possibleAnswers: arrayToString(standaloneResponse),
+      "what are the technical requirements for running scrimba? I only have a old laptop which is not that powerful.",
   });
-  //   console.log(standaloneResponse);
+  console.log(standaloneResponse);
 }
