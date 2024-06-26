@@ -7,7 +7,7 @@ export default function Home() {
       <div className="flex flex-col items-center">
         <h1 className="font-bold">RAG ChatBot using OpenAI</h1>
         <p className="p-2">
-          In order to use this application, first past your data into
+          In order to use this application, first paste your data into
           &quot;FAC.txt&quot; file and click the link below.
         </p>
         <Link href="/chatbot" className="underline text-blue-400">
