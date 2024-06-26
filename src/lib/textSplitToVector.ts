@@ -12,7 +12,7 @@ const openAIApiKey = process.env.OPENAI_API_KEY!;
 export async function textSplitToVector() {
   try {
     // Read FAC.txt
-    const filePath = path.join(process.cwd(), "src/public", "fac.txt");
+    const filePath = path.join(process.cwd(), "public", "fac.txt");
     const text = await fs.readFile(filePath, "utf-8");
 
     // Split text into chunks
