@@ -1,19 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { RiSendPlane2Fill } from "react-icons/ri";
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([
     {
+      id: 0,
       user: "",
       ai: "Hello, my name is Chatty Mate. How can I help you today?",
     },
   ]);
   const [question, setQuestion] = useState<string>("");
 
+  const messagesDiv = useRef<HTMLDivElement>(null);
+  const idRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (messagesDiv.current)
+      messagesDiv.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const handleClick = async () => {
+    setMessages([...messages, { id: idRef.current++, user: question, ai: "" }]);
+    setQuestion("");
+
     try {
       const result = await fetch("/api/chatbot", {
         method: "POST",
@@ -23,15 +35,21 @@ export default function Chat() {
         body: JSON.stringify({ question }),
       });
       const { response } = await result.json();
-      setMessages([...messages, { user: question, ai: response }]);
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message.id === idRef.current++
+            ? { ...message, ai: response }
+            : message
+        )
+      );
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div className="flex justify-center h-5/6 bg-gray-200 py-4">
-      <div className="flex flex-col justify-center w-1/4 items-center bg-white h-screen py-4 rounded-3xl rounded-r-none">
+    <div className="flex justify-center h-5/6 bg-gray-300 py-4">
+      <div className="flex flex-col justify-center w-1/4 items-center bg-white h-screen py-4 rounded-3xl rounded-r-none shadow-xl shadow-outline">
         <div className="flex justify-start items-center w-full mt-2 pl-4 bg-white ">
           <Image
             src="/images/logo.png"
@@ -42,18 +60,25 @@ export default function Chat() {
           />
           <h3 className="font-bold">Chatty Mate</h3>
         </div>
-        <div className="h-full w-full my-2 bg-blue-500 p-2">
+        <div className="h-full w-full my-2 bg-gray-300 p-2 overflow-y-auto">
           {messages.length !== 0 &&
             messages.map((message) => (
               <ul key={message.ai}>
-                <li className="bg-white rounded-lg rounded-tl-none p-2 mb-2">
-                  {message.ai}
-                </li>
-                <li className="bg-white rounded-lg rounded-br-none p-2">
-                  {message.user}
-                </li>
+                {message.user && (
+                  <span className="flex justify-end">
+                    <li className="ml-auto bg-blue-500 rounded-lg rounded-br-none p-2 mb-4 inline-block text-white">
+                      {message.user}
+                    </li>
+                  </span>
+                )}
+                {message.ai && (
+                  <li className="bg-white rounded-lg rounded-tl-none p-2 mb-4 inline-block">
+                    {message.ai}
+                  </li>
+                )}
               </ul>
             ))}
+          <div ref={messagesDiv} />
         </div>
         <div className="flex justify-center w-full px-2">
           <div className="flex justify-between w-full border-2 border-blue-500 rounded-lg rounded-tl-none mb-2 mx-4 bg-white">
